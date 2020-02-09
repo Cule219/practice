@@ -81,7 +81,22 @@ class LinedList {
     }
   
     // Helper Methods 
-    // isEmpty 
-    // size_Of_List 
-    // PrintList 
+    isEmpty () {
+        return !this.length;
+    }
+    size_Of_List() {
+        return this.size;
+    }
+    PrintList() {
+        let current = this.head;
+        let list = [];
+        while(current.next) {
+            // printing line by line;
+            console.log(current.element);
+            list.push(current.element);
+            current = current.next;
+        }
+        // priniting entire list
+        console.log(current.element);
+    }
 }
