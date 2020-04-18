@@ -1,3 +1,7 @@
+// create a function that will calculate minimum no of steps to get from a number to 1
+// available steps are -1 /2 /3
+// if number is 1 return 0
+
 function minStepsToOne(n) {
   function traverse(current) {
     if (current === 1) {
