@@ -1,0 +1,23 @@
+{
+  "name": "03_02",
+  "version": "1.0.0",
+  "description": "Node.js: Testing and Code Quality - Assertion Library Comparison",
+  "scripts": {
+    "eslint": "eslint",
+    "test": "node test"
+  },
+  "keywords": [
+    "assert",
+    "chai",
+    "code",
+    "should"
+  ],
+  "author": "Jon Peck <jpeck@fluxsauce.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^4.0.2",
+    "code": "^4.1.0",
+    "eslint": "^4.1.1",
+    "should": "^11.2.1"
+  }
+}
