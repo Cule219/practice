@@ -49,7 +49,9 @@ SELECT DISTINCT a.name, w.channel
 FROM accounts a
 JOIN web_events w
 ON w.account_id = a.id
-WHERE a.id = 1001SELECT o.occurred_at, a.name, o.total, o.total_amt_usd 
+WHERE a.id = 1001
+
+SELECT o.occurred_at, a.name, o.total, o.total_amt_usd 
 FROM orders o
 LEFT JOIN accounts a
 ON o.account_id = a.id
@@ -57,3 +59,7 @@ WHERE EXTRACT(YEAR FROM o.occurred_at) = '2015'
 LEFT JOIN accounts a
 ON o.account_id = a.id
 WHERE EXTRACT(YEAR FROM o.occurred_at) = '2015'
+WHERE a.id = 1001
+
+
+-- NULL is lack of data, it's not a value therefore we check if something is NULL with IS rather than =
