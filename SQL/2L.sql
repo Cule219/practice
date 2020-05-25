@@ -38,5 +38,4 @@ JOIN web_events w
 ON w.account_id = a.id
 WHERE a.id = 1001
 
-
 -- NULL is lack of data, it's not a value therefore we check if something is NULL with IS rather than =
