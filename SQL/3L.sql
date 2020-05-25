@@ -44,3 +44,122 @@ FROM accounts a
 JOIN orders o
 ON a.id = o.account_id
 GROUP BY a.name
+--- Find the number of sales reps in each region. Your final table should have two columns - the region and the number of sales_reps. Order from fewest reps to most reps.
+SELECT r.name AS region, COUNT(sr.*) AS num_reps
+FROM region r
+JOIN sales_reps sr
+ON r.id = sr.region_id
+GROUP BY r.name
+--- For each account, determine the average amount of each type of paper they purchased across their orders. Your result should have four columns - one for the account name and one for the average quantity purchased for each of the paper types for each account. 
+SELECT a.name, AVG(o.standard_qty) AS standard, 
+AVG(o.gloss_qty) AS gloss , AVG(o.poster_qty) AS poster
+FROM accounts a
+JOIN orders o
+ON o.account_id = a.id
+GROUP BY a.name
+--- For each account, determine the average amount spent per order on each paper type. Your result should have four columns - one for the account name and one for the average amount spent on each paper type.
+SELECT a.name, (SUM(total)/(AVG(o.standard_qty)+0.01)) AS standard, 
+(SUM(total)/(AVG(o.gloss_qty)+0.01)) AS gloss , (SUM(total)/(AVG(o.poster_qty)+0.01)) AS poster
+FROM accounts a
+JOIN orders o
+ON o.account_id = a.id
+GROUP BY a.name
+--- Determine the number of times a particular channel was used in the web_events table for each sales rep. Your final table should have three columns - the name of the sales rep, the channel, and the number of occurrences. Order your table with the highest number of occurrences first.
+SELECT s.name, w.channel, COUNT(w.*) AS occurrences
+FROM sales_reps s
+JOIN accounts a
+ON a.sales_rep_id = s.id
+JOIN web_events w
+ON w.account_id = a.id
+GROUP BY w.channel, s.name
+ORDER BY occurrences DESC
+--- Determine the number of times a particular channel was used in the web_events table for each region. Your final table should have three columns - the region name, the channel, and the number of occurrences. Order your table with the highest number of occurrences first.
+SELECT r.name, w.channel, COUNT(w.*) as occurrences
+FROM region r
+JOIN sales_reps s
+ON r.id = s.region_id
+JOIN accounts a
+ON a.sales_rep_id = s.id
+JOIN web_events w
+ON w.account_id = a.id
+GROUP BY r.name, w.channel
+ORDER BY occurrences DESC
+-- DISTINCT
+--- Use DISTINCT to test if there are any accounts associated with more than one region.
+SELECT a.id as "account id", r.id as "region id", 
+a.name as "account name", r.name as "region name"
+FROM accounts a
+JOIN sales_reps s
+ON s.id = a.sales_rep_id
+JOIN region r
+ON r.id = s.region_id;
+--- Have any sales reps worked on more than one account?
+SELECT s.id, s.name, COUNT(*) num_accounts
+FROM accounts a
+JOIN sales_reps s
+ON s.id = a.sales_rep_id
+GROUP BY s.id, s.name
+ORDER BY num_accounts;
+--     HAVING is like WHERE, but works on logical statements involving aggregations
+--- How many of the sales reps have more than 5 accounts that they manage?
+SELECT COUNT(a.sales_rep_id) AS acc_sr, 
+s.name
+FROM accounts a
+JOIN sales_reps s
+ON s.id = a.sales_rep_id
+GROUP BY s.name
+HAVING COUNT(a.sales_rep_id) > 5
+--- How many accounts have more than 20 orders?
+SELECT COUNT(o.*) AS ord_count, 
+a.name
+FROM accounts a
+JOIN orders o
+ON o.account_id = a.id
+GROUP BY a.name
+HAVING COUNT(o.*) > 20
+--- Which account has the most orders?
+SELECT COUNT(o.*) AS ord_count, 
+a.name
+FROM accounts a
+JOIN orders o
+ON o.account_id = a.id
+GROUP BY a.name
+ORDER BY ord_count DESC
+LIMIT 1
+--- Which channel was most frequently used by most accounts?
+SELECT w.channel, COUNT(a.*) AS max
+FROM web_events w
+JOIN accounts a
+ON a.id = w.account_id
+GROUP BY w.channel
+ORDER BY max DESC
+LIMIT 1
+-- DATES
+--- DATES are stored in a YYYY-MM-DD format in databases
+--- In order to group by date we set the time to 00:00:00 in order to group for that day(eg. 2017-01-12 00:00:00) we can do this with DATE_TRUNC function
+--- DATE_PART for 'dow' day of the week
+
+-- Find the sales in terms of total dollars for all orders in each year, ordered from greatest to least. Do you notice any trends in the yearly sales totals?
+SELECT SUM(total_amt_usd) as total, DATE_TRUNC('year', occurred_at) AS year
+FROM orders
+GROUP BY year
+-- Which month did Parch & Posey have the greatest sales in terms of total dollars? Are all months evenly represented by the dataset?
+SELECT SUM(total_amt_usd) as total, DATE_PART('month', occurred_at) AS year
+FROM orders
+GROUP BY year
+-- Which year did Parch & Posey have the greatest sales in terms of total number of orders? Are all years evenly represented by the dataset?
+SELECT SUM(total) as total, DATE_TRUNC('year', occurred_at) AS year
+FROM orders
+GROUP BY year
+-- Which month did Parch & Posey have the greatest sales in terms of total number of orders? Are all months evenly represented by the dataset?
+SELECT SUM(total) as total, DATE_PART('month', occurred_at) AS year
+FROM orders
+GROUP BY year
+-- In which month of which year did Walmart spend the most on gloss paper in terms of dollars?
+SELECT SUM(o.gloss_qty) as total, DATE_TRUNC('month', o.occurred_at) AS month
+FROM orders o
+JOIN accounts a
+ON o.account_id = a.id
+WHERE a.name = 'Walmart'
+GROUP BY month
+ORDER BY total DESC
