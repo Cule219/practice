@@ -139,23 +139,23 @@ LIMIT 1
 --- In order to group by date we set the time to 00:00:00 in order to group for that day(eg. 2017-01-12 00:00:00) we can do this with DATE_TRUNC function
 --- DATE_PART for 'dow' day of the week
 
--- Find the sales in terms of total dollars for all orders in each year, ordered from greatest to least. Do you notice any trends in the yearly sales totals?
+--- Find the sales in terms of total dollars for all orders in each year, ordered from greatest to least. Do you notice any trends in the yearly sales totals?
 SELECT SUM(total_amt_usd) as total, DATE_TRUNC('year', occurred_at) AS year
 FROM orders
 GROUP BY year
--- Which month did Parch & Posey have the greatest sales in terms of total dollars? Are all months evenly represented by the dataset?
+--- Which month did Parch & Posey have the greatest sales in terms of total dollars? Are all months evenly represented by the dataset?
 SELECT SUM(total_amt_usd) as total, DATE_PART('month', occurred_at) AS year
 FROM orders
 GROUP BY year
--- Which year did Parch & Posey have the greatest sales in terms of total number of orders? Are all years evenly represented by the dataset?
+--- Which year did Parch & Posey have the greatest sales in terms of total number of orders? Are all years evenly represented by the dataset?
 SELECT SUM(total) as total, DATE_TRUNC('year', occurred_at) AS year
 FROM orders
 GROUP BY year
--- Which month did Parch & Posey have the greatest sales in terms of total number of orders? Are all months evenly represented by the dataset?
+--- Which month did Parch & Posey have the greatest sales in terms of total number of orders? Are all months evenly represented by the dataset?
 SELECT SUM(total) as total, DATE_PART('month', occurred_at) AS year
 FROM orders
 GROUP BY year
--- In which month of which year did Walmart spend the most on gloss paper in terms of dollars?
+--- In which month of which year did Walmart spend the most on gloss paper in terms of dollars?
 SELECT SUM(o.gloss_qty) as total, DATE_TRUNC('month', o.occurred_at) AS month
 FROM orders o
 JOIN accounts a
@@ -163,3 +163,9 @@ ON o.account_id = a.id
 WHERE a.name = 'Walmart'
 GROUP BY month
 ORDER BY total DESC
+-- CASE
+--- WHEN, THEN, END, ELSE
+--- example:
+SELECT account_id, CASE WHEN standard_qty = 0 OR standard_qty IS NULL THEN 0
+                        ELSE standard_amt_usd/standard_qty END AS unit_price
+FROM orders
