@@ -223,12 +223,12 @@ FROM sales_reps s
 GROUP BY s.name
 ORDER BY total_sales DESC;
 --- The previous didn't account for the middle, nor the dollar amount associated with the sales. Management decides they want to see these characteristics represented as well. We would like to identify top performing sales reps, which are sales reps associated with more than 200 orders or more than 750000 in total sales. The middle group has any rep with more than 150 orders or 500000 in sales. Create a table with the sales rep name, the total number of orders, total sales across all orders, and a column with top, middle, or low depending on this criteria. Place the top sales people based on dollar amount of sales first in your final table. You might see a few upset sales people by this criteria!
-SELECT s.name, COUNT(o.*) AS count_sales,
+SELECT s.name, COUNT(*) AS count_sales,
       SUM(o.total_amt_usd) AS count_usd,
-      CASE WHEN COUNT(o.*) > 200 OR
+      CASE WHEN COUNT(*) > 200 OR
             SUM(o.total_amt_usd) > 750000
 THEN 'top'
-WHEN (COUNT(o.*) > 150 AND COUNT(o.*) < 200) OR
+WHEN (COUNT(*) > 150 AND COUNT(*) < 200) OR
             SUM(o.total_amt_usd) > 500000
 THEN 'middle'
 ELSE 'low' END AS top_sales
