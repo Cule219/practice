@@ -52,3 +52,9 @@ SELECT channel,
     FROM web_events
     GROUP BY 1
     ORDER BY 2
+
+-- OPTIMIZING
+    -- Table size - try to test on a subquery with limit set
+    -- Joins
+    -- Aggregations - try to agregate begfore joining
+-- EXPLAIN - used to track execution times
