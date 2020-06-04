@@ -1,6 +1,9 @@
 /**
-create a function that will calculate minimum no of steps to get from a number n passed as a parameter to 1
-available steps are -1 /2 /3
+Create a function that will calculate minimum number of steps to get from a number (passed as a parameter n) to 1.
+Available steps are you can take are: 
+-1 (minus by one)
+/2 (divide by two)
+/3 (divide by three)
 if number is 1 return 0
 ex1:
   n = 3;
@@ -20,7 +23,7 @@ ex3:
 
   ** Numbers passed can be up to 1,000,000
 */
-function minStepsToOne(n) {}
+// function minStepsToOne(n) {}
 
 function minStepsToOne(n) {
   function traverse(current) {

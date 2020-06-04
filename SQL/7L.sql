@@ -41,6 +41,7 @@ ORDER BY o1.account_id, o1.occurred_at
     -- Both tables must have the same number of columns.
     -- Those columns must have the same data types in the same order as the first table.
 -- Using UNION ALL's results as a table
+
 WITH web_events AS (
     SELECT * FROM demo.web_events
     UNION ALL
