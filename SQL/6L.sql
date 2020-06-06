@@ -74,3 +74,4 @@ NTILE(100) OVER(ORDER BY SUM(total_amt_usd)) AS total_percentile
 FROM orders
 GROUP BY 1,2
 ORDER BY total_percentile DESC
+-- Not quite! Remember what the Window Functions does. Remember, a) you just need one row per filmlen_group. b) You don't need the actor's full name.
