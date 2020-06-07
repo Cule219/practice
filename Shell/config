@@ -1,0 +1,13 @@
+curl -o google.html -L 'http://google.com'
+cat -> 
+less ->
+grep ->
+wc ->
+~/.bashrc
+~/.bash_profile
+
+export PS1="$"
+alias sl = 'ls'
+alias ll = 'ls -al'
+alias .. = 'cd ..'
+alias cl = 'curl -L'
