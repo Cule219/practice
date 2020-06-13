@@ -63,3 +63,46 @@ CASE
 END AS filmlen_groups
 FROM film f
 GROUP BY 2
+
+
+
+
+SELECT AVG(DATE_PART('day', return_date-rental_date))
+AS rent_avg
+from rental
+
+SELECT f.title, c.name,  COUNT(r.rental_id),
+NTILE(4) OVER(ORDER BY DATE_PART('day', return_date-rental_date)) AS total_percentile
+FROM film f
+JOIN inventory i 
+ON f.film_id = i.film_id
+JOIN rental r
+ON r.inventory_id = i.inventory_id
+JOIN film_category fc
+ON f.film_id = fc.film_id
+JOIN category c
+ON fc.category_id = c.category_id
+WHERE c.name IN ('Animation', 'Children', 'Classics', 'Comedy', 'Family', 'Music')
+GROUP BY 1,2
+ORDER BY 3 DESC
+
+
+
+-- FIRST ITERATION
+-- Create a query that lists each movie, the film category it is classified in, and the number of times it has been rented out.
+SELECT f.title, c.name,  COUNT(r.rental_id) as rents_count
+FROM film f
+JOIN inventory i 
+ON f.film_id = i.film_id
+JOIN rental r
+ON r.inventory_id = i.inventory_id
+JOIN film_category fc
+ON f.film_id = fc.film_id
+JOIN category c
+ON fc.category_id = c.category_id
+WHERE c.name IN ('Animation', 'Children', 'Classics', 'Comedy', 'Family', 'Music')
+GROUP BY 1,2
+ORDER BY 3 DESC
+
+
+
